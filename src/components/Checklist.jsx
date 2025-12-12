@@ -11,7 +11,6 @@ function Checklist() {
             .then((response) => response.json())
             .then((result) => setChecklistItems(result));
     }, []);
-    console.log(checklistItems);
 
     function toggleItem(id) {
         const newItems = { ...checkedItems };
@@ -32,11 +31,10 @@ function Checklist() {
                     Object.values(checkedItems).filter((checked) => checked)
                         .length
                 }
-                /30 Fleas
+                /{checklistItems.length} Fleas
             </p>
             <ul className="w-full px-4 flex flex-col gap-4">
                 {checklistItems.map((item) => {
-                    console.log(item);
                     return (
                         <ChecklistItem
                             title={item.title}
@@ -45,6 +43,7 @@ function Checklist() {
                             mapUrl={item.imageTwo}
                             toggleItem={toggleItem}
                             checkedItems={checkedItems}
+                            key={item.id}
                         />
                     );
                 })}

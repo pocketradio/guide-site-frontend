@@ -16,7 +16,7 @@ function ChecklistItem({
         <li className="text-black bg-stone-500 shadow-md shadow-black  transition-all duration-450 box-border w-full rounded-md flex flex-col p-2 gap-2">
             {/* Header - Checkbox, Title, and Button */}
             <div className="flex w-full">
-                <label className="flex">
+                <label className="flex flex-1">
                     <input
                         id={"checkbox-" + title}
                         name={"checkbox" + title}
@@ -28,13 +28,13 @@ function ChecklistItem({
                         }
                         onChange={() => toggleItem(id)}
                     />
-                    <p className="flex items-center ml-2">{title}</p>
+                    <p className="flex flex-1 items-center ml-2">{title}</p>
                 </label>
                 <button
                     onClick={() => setPicsVisible(!picsVisible)}
                     className="text-amber-50 bg-neutral-600 rounded px-2 py-0.5 ml-auto"
                 >
-                    {(picsVisible && "Hide Images") || "Show Images"}
+                    {(picsVisible && "Hide") || "Show"}
                 </button>
             </div>
 
