@@ -3,11 +3,10 @@ import "../tailwind.css";
 import ChecklistItem from "./ChecklistItem";
 
 function Checklist({ checklistId }) {
-    const localChecked = JSON.parse(localStorage.getItem("checkedItems"));
-    if (!localChecked) {
-        localStorage.setItem("checkedItems", JSON.stringify({}));
-    }
-    const [checkedItems, setCheckedItems] = useState(localChecked);
+    const [checkedItems, setCheckedItems] = useState(() => {
+        const stored = localStorage.getItem("checkedItems");
+        return stored ? JSON.parse(stored) : {};
+    });
     const [checklistItems, setChecklistItems] = useState([]);
 
     useEffect(() => {
