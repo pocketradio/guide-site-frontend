@@ -5,11 +5,16 @@ import ChecklistItem from "./ChecklistItem";
 function Checklist() {
     const [checkedItems, setCheckedItems] = useState({});
     const [checklistItems, setChecklistItems] = useState([]);
+    console.log(checklistItems);
 
     useEffect(() => {
         fetch("https://guide-site-backend.onrender.com/checklists/1")
             .then((response) => response.json())
-            .then((result) => setChecklistItems(result));
+            .then((result) =>
+                setChecklistItems(
+                    result.sort((a, b) => a.title.localeCompare(b.title))
+                )
+            );
     }, []);
 
     function toggleItem(id) {
