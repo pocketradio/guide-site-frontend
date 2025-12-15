@@ -29,7 +29,7 @@ function ChecklistItem({
                     (hide && "h-0 py-0 shadow-none") ||
                     (!picsVisible &&
                         "h-11 py-2 mb-4 shadow-md bg-cover bg-center") ||
-                    "h-110 py-2 mb-4 shadow-md bg-[position:center_100%]"
+                    "h-110 py-2 mb-4 shadow-md bg-position-[center_100%]"
                 }`}
             >
                 {/* Header - Checkbox, Title, and Button */}
