@@ -4,30 +4,30 @@ import ChecklistItem from "./ChecklistItem";
 
 function Checklist({ checklistId }) {
     const [checkedItems, setCheckedItems] = useState(() => {
-        const stored = localStorage.getItem("checkedItems");
-        return stored ? JSON.parse(stored) : {};
+        const checkStored = JSON.parse(localStorage.getItem("checkedItems"));
+        const stored = Array.isArray(checkStored) ? checkStored : [];
+        return stored;
     });
     const [checklistItems, setChecklistItems] = useState([]);
     const [showAll, setShowAll] = useState(true);
-    // console.log(checklistItems);
 
+    // Download the items
     useEffect(() => {
         fetch(
             "https://guide-site-backend.onrender.com/checklists/" + checklistId
         )
             .then((response) => response.json())
             .then((result) => setChecklistItems(result));
-        // .then((result) => (showAll ? "test" : result));
     }, [checklistId]);
 
     function toggleItem(id) {
-        const newItems = { ...checkedItems };
-
-        if (newItems[id] !== undefined) {
-            newItems[id] = !newItems[id];
+        let newItems = [...checkedItems];
+        if (newItems.includes(id)) {
+            newItems = newItems.filter((item) => item != id);
         } else {
-            newItems[id] = true;
+            newItems.push(id);
         }
+
         localStorage.setItem("checkedItems", JSON.stringify(newItems));
         setCheckedItems(newItems);
     }
@@ -40,14 +40,13 @@ function Checklist({ checklistId }) {
         let list = checklistItems;
         list = list.sort((a, b) => a.title.localeCompare(b.title));
 
-        const checkedItemsIds = Object.keys(checkedItems)
-            .map((item) => +item)
-            .filter((itemId) => checkedItems[itemId]);
+        /* if (!showAll) {
+            const checkedItemsIds = Object.keys(checkedItems)
+                .map((item) => +item)
+                .filter((itemId) => checkedItems[itemId]);
 
-        if (!showAll) {
             list = list.filter((item) => !checkedItemsIds.includes(+item.id));
-        }
-
+        } */
         return list;
     }
 
@@ -76,8 +75,10 @@ function Checklist({ checklistId }) {
             </div>
 
             {/* Checklist UL */}
-            <ul className="w-full p-4 pt-2 flex flex-col gap-4 overflow-x-auto">
+            <ul className="w-full p-4 pt-2 pb-0 overflow-y-auto ">
                 {filterAndSortChecklist().map((item) => {
+                    const hide = checkedItems.includes(item.id) && !showAll;
+
                     return (
                         <ChecklistItem
                             title={item.title}
@@ -87,6 +88,7 @@ function Checklist({ checklistId }) {
                             toggleItem={toggleItem}
                             checkedItems={checkedItems}
                             key={item.id}
+                            hide={hide}
                         />
                     );
                 })}

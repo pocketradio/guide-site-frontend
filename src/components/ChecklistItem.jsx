@@ -9,24 +9,27 @@ function ChecklistItem({
     id,
     checkedItems,
     toggleItem,
+    hide,
 }) {
     const [picsVisible, setPicsVisible] = useState(false);
 
     return (
-        <li className="text-black bg-stone-500 shadow-md shadow-black  transition-all duration-450 box-border w-full rounded-md flex flex-col p-2 gap-2">
+        <li
+            className={`text-black bg-stone-500 shadow-black  transition-all duration-300 box-border w-full rounded-md px-2 min-h-0 overflow-hidden flex flex-col gap-2 ${
+                (hide && "text-white h-0 py-0 shadow-none") ||
+                (!picsVisible && "h-11 py-2 mb-4 shadow-md") ||
+                "h-110 py-2 mb-4 shadow-md"
+            }`}
+        >
             {/* Header - Checkbox, Title, and Button */}
-            <div className="flex w-full">
-                <label className="flex flex-1">
+            <div className="flex">
+                <label className="flex">
                     <input
                         className="accent-neutral-200 bg-neutral-200"
                         id={"checkbox-" + title}
                         name={"checkbox" + title}
                         type="checkbox"
-                        checked={
-                            checkedItems[id] !== undefined
-                                ? checkedItems[id]
-                                : false
-                        }
+                        checked={checkedItems.includes(id)}
                         onChange={() => toggleItem(id)}
                     />
                     <p className="flex flex-1 items-center ml-2">{title}</p>
@@ -40,12 +43,21 @@ function ChecklistItem({
             </div>
 
             {/* Images */}
-            {picsVisible && (
-                <Fragment>
-                    <img className="justify-center" src={inGameUrl} alt="" />
-                    <img className="justify-center" src={mapUrl} alt="" />
-                </Fragment>
-            )}
+
+            <img
+                className={`object-cover h-45 w-80 justify-center transition-all duration-300 mx-auto ${
+                    (picsVisible && "opacity-100") || "opacity-0"
+                }`}
+                src={inGameUrl}
+                alt=""
+            />
+            <img
+                className={`object-cover h-45 w-80 justify-center transition-all duration-300 mx-auto ${
+                    (picsVisible && "opacity-100") || "opacity-0"
+                }`}
+                src={mapUrl}
+                alt=""
+            />
         </li>
     );
 }
