@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import "../tailwind.css";
 import ChecklistItem from "./ChecklistItem";
+import PlaceholderMenu from "./OutletMenu";
+
+// IMPORTANT
+// Note that to use Checklist you need to give it a checklistId
 
 function Checklist({ checklistId }) {
     const [checkedItems, setCheckedItems] = useState(() => {
@@ -71,6 +75,7 @@ function Checklist({ checklistId }) {
                     {showAll ? "Show Remaining" : "Show All"}
                 </button>
             </div>
+            <PlaceholderMenu></PlaceholderMenu>
 
             {/* Checklist UL */}
             <ul className="w-full p-4 pt-2 pb-0 overflow-y-auto ">
