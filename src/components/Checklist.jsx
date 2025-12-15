@@ -43,14 +43,6 @@ function Checklist({ checklistId }) {
     function filterAndSortChecklist() {
         let list = checklistItems;
         list = list.sort((a, b) => a.title.localeCompare(b.title));
-
-        /* if (!showAll) {
-            const checkedItemsIds = Object.keys(checkedItems)
-                .map((item) => +item)
-                .filter((itemId) => checkedItems[itemId]);
-
-            list = list.filter((item) => !checkedItemsIds.includes(+item.id));
-        } */
         return list;
     }
 
@@ -95,6 +87,7 @@ function Checklist({ checklistId }) {
                             checkedItems={checkedItems}
                             key={item.id}
                             hide={hide}
+                            description={item.description}
                         />
                     );
                 })}
