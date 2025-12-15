@@ -9,7 +9,11 @@ function Checklist({ checklistId }) {
         return stored;
     });
     const [checklistItems, setChecklistItems] = useState([]);
-    const [showAll, setShowAll] = useState(true);
+    const [showAll, setShowAll] = useState(() => {
+        const stored = localStorage.getItem("showAll");
+        console.log(typeof stored);
+        return stored == "true";
+    });
 
     // Download the items
     useEffect(() => {
@@ -34,6 +38,7 @@ function Checklist({ checklistId }) {
 
     function toggleShowAll() {
         setShowAll(!showAll);
+        localStorage.setItem("showAll", !showAll);
     }
 
     function filterAndSortChecklist() {
