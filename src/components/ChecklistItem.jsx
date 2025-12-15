@@ -44,7 +44,7 @@ function ChecklistItem({
                             checked={checkedItems.includes(id)}
                             onChange={() => toggleItem(id)}
                         />
-                        <p className="flex flex-1 items-center ml-2">{title}</p>
+                        <p className="flex px-2 rounded-lg flex-1 items-center ml-2 bg-black/20">{title}</p>
                     </label>
                     <button
                         onClick={() => setPicsVisible(!picsVisible)}
