@@ -7,8 +7,11 @@ export default function Main() {
     const isAdmin = true;
 
     return (
-        <div className="h-full flex flex-col overflow-hidden">
-            <PageManager isAdmin={isAdmin} /> <Outlet />
+        <div className="h-full flex flex-col overflow-hidden items-center">
+            <div className="w-230">
+                <PageManager isAdmin={isAdmin} />
+            </div>
+            <Outlet />
         </div>
     );
 }

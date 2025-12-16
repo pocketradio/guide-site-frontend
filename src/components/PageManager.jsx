@@ -1,5 +1,6 @@
 import "../tailwind.css";
 import { Fragment, useEffect, useState } from "react";
+import PagesItem from "./PagesItem";
 
 // http://localhost:3000/pages
 // https://guide-site-backend.onrender.com/pages/
@@ -46,6 +47,7 @@ export default function PageManager() {
         const newPages = [...pages];
         newPages.push(newPage);
         setPages(newPages);
+        setTitle("");
     }
 
     function deletePage(id) {
@@ -54,23 +56,40 @@ export default function PageManager() {
             return;
         }
 
-        fetch("http://localhost:3000/pages", {
+        fetch("http://localhost:3000/pages/" + id, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id }),
+            body: JSON.stringify(),
         });
+    }
+
+    async function updatePageTitle(id, title, index) {
+        if (!+id) {
+            console.log("Error - Invalid ID " + +id);
+            return;
+        }
+
+        await fetch("http://localhost:3000/pages/" + id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title }),
+        });
+
+        const newPages = [...pages];
+        newPages[index].title = title;
+        setPages(newPages);
     }
 
     const isAdmin = true;
 
     return (
-        <div className="">
-            {isAdmin && (
-                <div className="p-4">
-                    <h1>Admin Tools</h1>
+        isAdmin && (
+            <div id="Page Manager" className="p-4">
+                <h1>Page Manager</h1>
 
-                    <div className="flex justify-between items-center mx-auto gap-2">
-                        <h1>Pages:</h1>
+                <div className="mt-4 flex justify-between items-center mx-auto gap-2">
+                    <h1>Pages:</h1>
+                    <form action="" className="flex gap-2">
                         <input
                             type="text"
                             id="title"
@@ -80,37 +99,33 @@ export default function PageManager() {
                             value={title}
                         />
                         <button
-                            onClick={() => createPage(title)}
+                            type="submit"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                createPage(title);
+                            }}
                             className="text-amber-50 bg-neutral-600 w-38 rounded px-2 py-0.5"
                         >
                             Create Page
                         </button>
-                    </div>
-                    <ul className="">
-                        {pages.map((page, pageIndex) => {
-                            return (
-                                <li
-                                    className="mt-4 w-full flex justify-between"
-                                    key={page.id}
-                                >
-                                    <p>{page.title}</p>
-                                    <button
-                                        onClick={() => {
-                                            const newPages = [...pages];
-                                            newPages.splice(pageIndex, 1);
-                                            setPages(newPages);
-                                            deletePage(page.id);
-                                        }}
-                                        className="text-amber-50 bg-neutral-600 w-22 rounded px-2 py-0.5"
-                                    >
-                                        Delete
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    </form>
                 </div>
-            )}
-        </div>
+                <ul className="">
+                    {pages.map((page, pageIndex) => {
+                        return (
+                            <PagesItem
+                                key={page.id}
+                                pageIndex={pageIndex}
+                                page={page}
+                                pages={pages}
+                                setPages={setPages}
+                                deletePage={deletePage}
+                                updatePageTitle={updatePageTitle}
+                            />
+                        );
+                    })}
+                </ul>
+            </div>
+        )
     );
 }
