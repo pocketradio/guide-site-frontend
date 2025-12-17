@@ -86,9 +86,9 @@ export default function PageManager() {
         isAdmin && (
             <div
                 id="Page Manager"
-                className="p-4 bg-(--surface-background) text-(--text-color) h-200 rounded-xl shadow-2xl"
+                className="p-4 bg-(--surface-background) max-w-230 w-full text-(--text-color) h-200 rounded-xl shadow-2xl"
             >
-                <h1 className="text-5xl" >Page Manager</h1>
+                <h1 className="text-5xl">Page Manager</h1>
 
                 <div className="mt-4 flex justify-between items-center mx-auto gap-2">
                     <h1>Pages:</h1>

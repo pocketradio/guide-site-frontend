@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function PagesItem({
     page,
@@ -52,8 +53,14 @@ export default function PagesItem({
                     toggleEditMode();
                 }}
             >
-                {(!editMode && "Edit") || "Cancel"}
+                {(!editMode && "Rename") || "Cancel"}
             </button>
+            <Link
+                className="text-amber-50 bg-neutral-600 w-22 mr-2 rounded px-2 py-0.5"
+                to={"/page-manager/" + page.id}
+            >
+                Edit
+            </Link>
             <button
                 onClick={async () => {
                     await deletePage(page.id);
