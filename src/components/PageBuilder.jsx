@@ -44,23 +44,25 @@ export default function PageBuilder() {
     }
 
     return (
-        <div className="flex flex-col items-center gap-4 w-full p-4 max-w-230">
-            {blocks.map((block) => {
-                // block values: id, pageId, content
-                return (
-                    <TextBlock
-                        key={block.id}
-                        deleteBlock={() => deleteBlock(block)}
-                    />
-                );
-            })}
-            <button
-                className="text-amber-50 bg-neutral-600 w-25 rounded px-2 py-0.5"
-                onClick={() => addBlock()}
-            >
-                Add Block
-            </button>
-            <Link to={"/page-manager/"}>Back to Page Manager</Link>
+        <div className="overflow-x-auto w-full flex justify-center">
+            <div className="flex flex-col items-center gap-4 w-full p-4 max-w-230">
+                {blocks.map((block) => {
+                    // block values: id, pageId, content
+                    return (
+                        <TextBlock
+                            key={block.id}
+                            deleteBlock={() => deleteBlock(block)}
+                        />
+                    );
+                })}
+                <button
+                    className="text-amber-50 bg-neutral-600 w-25 rounded px-2 py-0.5"
+                    onClick={() => addBlock()}
+                >
+                    Add Block
+                </button>
+                <Link to={"/page-manager/"}>Back to Page Manager</Link>
+            </div>
         </div>
     );
 }
