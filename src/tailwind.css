@@ -34,9 +34,10 @@
     text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black,
         -2px -2px 0 black;
     padding: 0 30px;
-    margin-top: 40px;
-    min-height: 100px;
-    margin-bottom: 40px;
     text-align: center;
+    display: flex;
+    align-items: center;
     word-break: break-word;
+    box-sizing: border-box;
+    height: 180px;
 }

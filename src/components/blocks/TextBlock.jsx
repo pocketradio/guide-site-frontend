@@ -6,6 +6,7 @@ export default function TextBlock({
     block,
     updateBlock,
     adminMode,
+    addBlock,
 }) {
     const editorRef = useRef(null);
     const [editMode, setEditMode] = useState(false);
@@ -64,6 +65,14 @@ export default function TextBlock({
                         className="text-amber-50 bg-(--primary) w-25 rounded px-2 py-0.5"
                     >
                         Delete
+                    </button>
+                    <button
+                        onClick={async () => {
+                            await addBlock(block.order + 1);
+                        }}
+                        className="text-amber-50 bg-(--primary) w-25 rounded px-2 py-0.5"
+                    >
+                        Add Block
                     </button>
                 </div>
             )}

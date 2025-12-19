@@ -5,8 +5,11 @@ import { useParams, Link } from "react-router";
 export default function PageBuilder() {
     const { pageId } = useParams();
     const [blocks, setBlocks] = useState([]);
-    const [adminMode] = useState(true);
+    const [adminMode, setAdminMode] = useState(true);
     const [pageData, setPageData] = useState({});
+    // const highestOrder = Math.max(...blocks.order);
+    const orders = blocks.map((block) => (block.order ? block.order : 0));
+    const highestOrder = Math.max(...orders);
 
     useEffect(() => {
         fetch("http://localhost:3000/pages/" + pageId)
@@ -17,18 +20,49 @@ export default function PageBuilder() {
             });
     }, [pageId]);
 
-    async function addBlock() {
+    function isOrderTaken(order) {
+        return blocks.find((block) => block.order == order) != undefined;
+    }
+
+    async function addBlock(nextOrder = highestOrder + 1) {
+        const orderTaken = isOrderTaken(nextOrder);
+
+        if (orderTaken) {
+            await shiftBlocks(nextOrder);
+        }
+
         const response = await fetch(
             "http://localhost:3000/pages/" + pageId + "/blocks",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({}),
+                body: JSON.stringify({ order: nextOrder }),
             }
         );
         const newBlock = await response.json();
         const newBlocks = [...blocks, newBlock];
         setBlocks(newBlocks);
+    }
+
+    async function shiftBlocks(order) {
+        const response = await fetch(
+            "http://localhost:3000/pages/" + pageId + "/blocks",
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ type: "offset", order }),
+            }
+        );
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+        blocks.map((block) => {
+            if (block.order >= order) {
+                block.order++;
+            }
+            return block;
+        });
+        return;
     }
 
     async function deleteBlock(block) {
@@ -85,26 +119,30 @@ export default function PageBuilder() {
                     id="page-builder-content-positioner"
                     className="max-w-230 w-full mt-5"
                 >
-                    {blocks.map((block) => {
-                        // block values: id, pageId, content
-                        return (
-                            <TextBlock
-                                key={block.id}
-                                deleteBlock={() => deleteBlock(block)}
-                                block={block}
-                                updateBlock={updateBlock}
-                                adminMode={adminMode}
-                            />
-                        );
-                    })}
+                    {blocks
+                        .sort((a, b) => a.order - b.order)
+                        .map((block) => {
+                            // block values: id, pageId, content
+                            return (
+                                <TextBlock
+                                    key={block.id}
+                                    deleteBlock={() => deleteBlock(block)}
+                                    block={block}
+                                    updateBlock={updateBlock}
+                                    adminMode={adminMode}
+                                    addBlock={addBlock}
+                                />
+                            );
+                        })}
                     {adminMode && (
-                        <div className="flex flex-col items-center gap-2">
+                        <div className="flex flex-col items-center gap-2 mt-2">
                             <button
-                                className="text-amber-50 bg-(--primary) w-25 rounded px-2 py-0.5"
+                                className="text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5"
                                 onClick={() => addBlock()}
                             >
                                 Add Block
                             </button>
+
                             <Link
                                 className="text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5"
                                 to={"/page-manager/"}
@@ -113,6 +151,14 @@ export default function PageBuilder() {
                             </Link>
                         </div>
                     )}
+                    <button
+                        className={`text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5 ${
+                            adminMode && "mt-2"
+                        }`}
+                        onClick={() => setAdminMode(!adminMode)}
+                    >
+                        Switch View
+                    </button>
                 </div>
             </div>
         </div>
