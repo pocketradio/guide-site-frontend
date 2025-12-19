@@ -21,7 +21,7 @@ export default function TextBlock({
 
     return (
         <div
-            className={`bg-(--surface-background) w-full text-(--text-color) ${
+            className={`content-block bg-(--surface-background) w-full text-(--text-color) ${
                 adminMode && "border-b border-(--primary) mb-4"
             }`}
         >

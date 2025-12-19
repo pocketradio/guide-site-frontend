@@ -142,23 +142,22 @@ export default function PageBuilder() {
                             >
                                 Add Block
                             </button>
-
-                            <Link
-                                className="text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5"
-                                to={"/page-manager/"}
-                            >
-                                Back to Page Manager
-                            </Link>
                         </div>
                     )}
-                    <button
-                        className={`text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5 ${
-                            adminMode && "mt-2"
-                        }`}
-                        onClick={() => setAdminMode(!adminMode)}
-                    >
-                        Switch View
-                    </button>
+                    <div className="flex flex-col items-center mt-2 gap-2">
+                        <Link
+                            className="text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5"
+                            to={"/page-manager/"}
+                        >
+                            Back to Page Manager
+                        </Link>
+                        <button
+                            className={`text-amber-50 bg-(--primary) w-50 rounded px-2 py-0.5`}
+                            onClick={() => setAdminMode(!adminMode)}
+                        >
+                            Switch View
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

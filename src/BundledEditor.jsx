@@ -57,6 +57,26 @@ export default function BundledEditor(props) {
             licenseKey="gpl"
             {...props}
             init={{
+                height: "80dvh",
+                plugins: [
+                    "lists",
+                    "advlist",
+                    "anchor",
+                    "autolink",
+                    "help",
+                    "image",
+                    "link",
+                    "lists",
+                    "searchreplace",
+                    "table",
+                    "wordcount",
+                ],
+                toolbar:
+                    "undo redo | blocks | " +
+                    "bold italic forecolor | alignleft aligncenter " +
+                    "alignright alignjustify | bullist numlist outdent indent | " +
+                    "removeformat | help" +
+                    "numlist bullist",
                 menubar: false,
                 promotion: false,
                 onboarding: false,
