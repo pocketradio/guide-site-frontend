@@ -1,12 +1,19 @@
 import "../tailwind.css";
-import { Fragment } from "react";
 import { Outlet } from "react-router";
-import PageManager from "./PageManager";
+import Navbar from "./navbar/Navbar.jsx";
+import Title from "./Title.jsx";
+import { PageProvider } from "../contexts/PageProvider.jsx";
 
 export default function Main() {
     return (
-        <div className="h-full box-border flex overflow-hidden items-center custom-background place-content-center">
-            <Outlet />
-        </div>
+        <PageProvider>
+            <div className="flex flex-col h-full w-full box-border items-center custom-background">
+                <Title></Title>
+                <div className="h-full w-full box-border flex items-center custom-background place-content-center border-t-4 border-(--outline)">
+                    <Navbar></Navbar>
+                    <Outlet />
+                </div>
+            </div>
+        </PageProvider>
     );
 }

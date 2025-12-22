@@ -37,7 +37,7 @@ export default function PageBuilder() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ order: nextOrder }),
-            }
+            },
         );
         const newBlock = await response.json();
         const newBlocks = [...blocks, newBlock];
@@ -51,7 +51,7 @@ export default function PageBuilder() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ type: "offset", order }),
-            }
+            },
         );
         if (!response.ok) {
             throw new Error("Request failed");
@@ -72,7 +72,7 @@ export default function PageBuilder() {
                 method: "DELETE",
                 // headers: { "Content-Type": "application/json" },
                 // body: JSON.stringify({}),
-            }
+            },
         );
 
         const deletedBlock = await response.json();
@@ -91,13 +91,13 @@ export default function PageBuilder() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ content }),
-            }
+            },
         );
 
         const result = await response.json();
         const newBlocks = [...blocks];
         const adjustIndex = newBlocks.findIndex(
-            (block) => block.id == result.id
+            (block) => block.id == result.id,
         );
         newBlocks[adjustIndex] = result;
         setBlocks(newBlocks);
@@ -108,12 +108,9 @@ export default function PageBuilder() {
             id="page-builder"
             className="overflow-x-auto h-full w-full flex flex-col items-center justify-baseline"
         >
-            <div id="page-builder-title" className="title">
-                {pageData.title}
-            </div>
             <div
                 id="page-builder-blocks-container"
-                className="bg-(--surface-background) flex flex-1 flex-col items-center gap-4 w-full p-4 border-t-4 border-(--outline)"
+                className="bg-(--surface-background) flex flex-1 flex-col items-center gap-4 w-full p-4"
             >
                 <div
                     id="page-builder-content-positioner"
