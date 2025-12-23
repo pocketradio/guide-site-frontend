@@ -8,12 +8,32 @@ export default function SingleImageBlock({
     adminMode,
     addBlock,
 }) {
+    async function uploadFile(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const response = await fetch(currentAPI + "/files", {
+            method: "POST",
+            body: formData,
+        });
+        if (!response.ok) {
+            console.error("upload failed");
+            return;
+        }
+        e.target.reset();
+    }
+
     const { currentAPI } = usePage();
     const [editMode, setEditMode] = useState(false);
 
     return (
         <div className="">
-            <form action="/upload" method="post" encType="multipart/form-data">
+            <form
+                onSubmit={uploadFile}
+                // action={currentAPI + "/files"}
+                method="post"
+                encType="multipart/form-data"
+            >
                 <input type="hidden" name="id" value="<%= folder.id %>" />
                 <input type="file" name="upload-file" />
                 <button type="submit">Upload</button>
