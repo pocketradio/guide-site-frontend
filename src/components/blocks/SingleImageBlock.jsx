@@ -13,7 +13,6 @@ export default function SingleImageBlock({
 
         // Upload a file to amazon
         const formData = new FormData(e.target);
-        const blockId = block;
         formData.append("block", JSON.stringify(block));
         const response = await fetch(currentAPI + "/files", {
             method: "POST",
@@ -41,7 +40,12 @@ export default function SingleImageBlock({
                 method="post"
                 encType="multipart/form-data"
             >
-                <img src={!!block.files[0] && block.files[0].url} alt="" />
+                <img
+                    id={"photo-img-" + block.id}
+                    src={!!block.files[0] && block.files[0].url}
+                    alt=""
+                    className="max-h-80 mx-auto"
+                />
                 <input type="hidden" name="id" value="<%= folder.id %>" />
                 <input type="file" name="upload-file" />
                 <button type="submit">Upload</button>
