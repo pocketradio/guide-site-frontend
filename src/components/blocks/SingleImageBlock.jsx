@@ -29,17 +29,11 @@ export default function SingleImageBlock({
     }
 
     async function deleteFile(number) {
-        console.log(number);
-        const fileName = block.files[number].filename;
-        console.log(block.files[number].filename);
-        console.log(currentAPI + "/files/" + fileName);
-        const response = await fetch(currentAPI + "/files/" + fileName, {
+        const fileId = block.files[number].id;
+        const response = await fetch(currentAPI + "/files/" + fileId, {
             method: "Delete",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(block.files[number]),
         });
         const result = await response.json();
-        console.log(result);
     }
 
     const { currentAPI } = usePage();
