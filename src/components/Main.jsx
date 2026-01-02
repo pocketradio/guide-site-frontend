@@ -3,8 +3,36 @@ import { Outlet } from "react-router";
 import Navbar from "./navbar/Navbar.jsx";
 import Title from "./Title.jsx";
 import NavBarOpenButton from "./NavBarOpenButton.jsx";
+import { useEffect, useState } from "react";
 
 export default function Main() {
+    const [navOpen, setNavOpen] = useState(true);
+    console.log(navOpen);
+
+    function toggleNav() {
+        setNavOpen(!navOpen);
+        console.log("hi");
+    }
+
+    useEffect(() => {
+        if (navOpen) {
+            const scrollY = window.scrollY;
+
+            document.body.style.position = "fixed";
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = "100%";
+        } else {
+            const scrollY = Math.abs(
+                parseInt(document.body.style.top || "0", 10),
+            );
+
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+
+            window.scrollTo(0, scrollY);
+        }
+    }, [navOpen]);
     return (
         <div
             id="main-page-sections"
@@ -16,7 +44,15 @@ export default function Main() {
                 className="w-full box-border border-t-4 border-(--outline) flex flex-1 xl:pr-30 2xl:pr-60 bg-(--surface-background)"
             >
                 <Navbar
-                    className={`h-full bg-(--primary) border-r-4 border-(--outline) hidden lg:flex lg:flex-col min-w-60 w-60`}
+                    className={`
+                        h-[80%] w-[80%] max-w-100 z-2 lg:h-full lg:w-fit lg:min-w-60
+                        ${navOpen ? "fixed" : "hidden"} bottom-[50%] right-[50%] translate-1/2 lg:static lg:translate-0
+                        border-4 border-(--outline) lg:border-t-0 lg:border-b-0 lg:border-l-0 lg:border-r-4
+                        bg-(--primary)   
+                        lg:flex lg:flex-col
+                        overflow-x-auto`}
+                    obstructorClassName={`z-1 ${navOpen ? "fixed" : "hidden"} top-0 w-full h-full bg-black/30`}
+                    toggleNav={toggleNav}
                 ></Navbar>
                 <div
                     id="page-outer-bounds"
@@ -30,6 +66,7 @@ export default function Main() {
                     "lg:hidden sticky bottom-0 flex w-full justify-center border-t-4 border-(--outline) bg-(--red-brown)"
                 }
                 buttonClassName={"h-13 w-13"}
+                toggleNav={toggleNav}
             ></NavBarOpenButton>
         </div>
     );

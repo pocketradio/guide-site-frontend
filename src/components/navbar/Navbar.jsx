@@ -1,4 +1,5 @@
 import NavbarButton from "./NavbarButton";
+import { Fragment } from "react";
 
 const navbar = [
     {
@@ -109,21 +110,25 @@ const navbar = [
     },
 ];
 
-export default function Navbar({className}) {
+export default function Navbar({ className, obstructorClassName, toggleNav }) {
     return (
-        <div
-            id="nav-bar"
-            className={className}
-        >
-            {navbar.map((item) => {
-                return (
-                    <NavbarButton
-                        slug={item.slug}
-                        navbarTitle={item.navbarTitle}
-                        key={item.id}
-                    />
-                );
-            })}
-        </div>
+        <Fragment>
+            <div id="nav-bar" className={className}>
+                {navbar.map((item) => {
+                    return (
+                        <NavbarButton
+                            slug={item.slug}
+                            navbarTitle={item.navbarTitle}
+                            key={item.id}
+                        />
+                    );
+                })}
+            </div>
+            <div
+                id="navbar-obstructor"
+                onClick={toggleNav}
+                className={obstructorClassName}
+            ></div>
+        </Fragment>
     );
 }
