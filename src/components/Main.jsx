@@ -27,7 +27,7 @@ export default function Main() {
             </div>
             <NavBarOpenButton
                 className={
-                    "sticky bottom-0 flex w-full justify-center border-t-4 border-(--outline) bg-(--red-brown)"
+                    "lg:hidden sticky bottom-0 flex w-full justify-center border-t-4 border-(--outline) bg-(--red-brown)"
                 }
                 buttonClassName={"h-13 w-13"}
             ></NavBarOpenButton>
