@@ -7,7 +7,7 @@ import SingleImageBlock from "./blocks/SingleImageBlock";
 export default function PageBuilder({ className }) {
     const { pageId } = useParams();
     const [blocks, setBlocks] = useState([]);
-    const [adminMode, setAdminMode] = useState(true);
+    const [adminMode, setAdminMode] = useState(false);
     const [pageData, setPageData] = useState({});
     // const highestOrder = Math.max(...blocks.order);
     const orders = blocks.map((block) => (block.order ? block.order : 0));

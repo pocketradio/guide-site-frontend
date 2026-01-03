@@ -6,7 +6,7 @@ import NavBarOpenButton from "./NavBarOpenButton.jsx";
 import { useEffect, useState } from "react";
 
 export default function Main() {
-    const [navOpen, setNavOpen] = useState(true);
+    const [navOpen, setNavOpen] = useState(false);
     console.log(navOpen);
 
     function toggleNav() {

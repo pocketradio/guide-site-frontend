@@ -35,6 +35,7 @@ body,
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow-x: hidden;
     /* scrollbar-gutter: stable; */
 }
 
@@ -139,4 +140,9 @@ ol {
 .content-block a:hover::after,
 .content-block a:hover::after {
     transform: scaleX(1);
+}
+
+
+iframe[src*="youtube.com/embed"] {
+  max-width: 100%;
 }
