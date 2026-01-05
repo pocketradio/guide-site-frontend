@@ -171,7 +171,6 @@ export default function Navbar({
         <Fragment>
             <div id="nav-bar" className={className}>
                 {navbar.map((item, index, arr) => {
-                    console.log(item);
                     if (item.type == "page") {
                         return (
                             <NavbarButton
