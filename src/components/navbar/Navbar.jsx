@@ -121,7 +121,6 @@ const navbar = [
     },
     {
         id: 26,
-        slug: "/page-manager/65",
         navbarTitle: "Other",
         type: "section",
     },
