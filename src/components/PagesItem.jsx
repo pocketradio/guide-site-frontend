@@ -73,7 +73,7 @@ export default function PagesItem({
             </button>
             <Link
                 className="text-amber-50 bg-(--primary) w-22 mr-2 rounded px-2 py-0.5"
-                to={"/page-manager/" + page.id}
+                to={"/" + page.slug}
             >
                 Edit
             </Link>
