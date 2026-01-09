@@ -10,7 +10,9 @@ export default function Main() {
     const [navOpen, setNavOpen] = useState(false);
 
     function toggleNav(state) {
-        if (state != undefined) {
+        // I go by typeof because events can
+        // sometimes get sneakily passed in
+        if (typeof state == "boolean") {
             setNavOpen(state);
         } else {
             setNavOpen(!navOpen);
