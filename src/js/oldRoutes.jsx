@@ -77,6 +77,6 @@ export default [
 
     {
         path: "/pages/unlock-order.html",
-        element: <Navigate to="/unlock-order" replace />,
+        element: <Navigate to="/unlock-order-hard" replace />,
     },
 ];
