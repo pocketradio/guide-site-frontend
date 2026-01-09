@@ -1,14 +1,9 @@
 import NavbarButton from "./NavbarButton";
 import { Fragment } from "react";
 import NavbarSection from "./NavbarSection";
+const env = import.meta.env.VITE_ENV;
 
 const navbar = [
-    {
-        id: 1,
-        slug: "/page-manager",
-        navbarTitle: "Page Manager",
-        type: "page",
-    },
     {
         id: 32,
         slug: "/immortal-guardians",
@@ -186,6 +181,15 @@ const navbar = [
         type: "page",
     },
 ];
+
+if (env == "DEV") {
+    navbar.unshift({
+        id: 1,
+        slug: "/page-manager",
+        navbarTitle: "Page Manager",
+        type: "page",
+    });
+}
 
 export default function Navbar({
     className,
