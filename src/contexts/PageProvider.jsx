@@ -7,7 +7,7 @@ export function PageProvider({ children }) {
     const [gameId, setGameId] = useState(1);
     const serverAPI = "https://guide-site-backend.onrender.com";
     const localAPI = "http://localhost:3000";
-    const currentAPI = localAPI;
+    const currentAPI = import.meta.env.VITE_SERVER == "LOCAL" ? localAPI : serverAPI;
 
     return (
         <PageContext.Provider
