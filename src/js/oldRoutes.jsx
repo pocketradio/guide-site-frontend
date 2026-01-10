@@ -83,4 +83,8 @@ export default [
         path: "/pages/immortal-guardians.html",
         element: <Navigate to="/immortal-guardians" replace />,
     },
+    {
+        path: "/pages/guardian-upgrade-costs.html",
+        element: <Navigate to="/guardian-upgrade-costs" replace />,
+    },
 ];

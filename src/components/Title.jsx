@@ -12,7 +12,15 @@ export default function Title() {
             id="page-builder-title"
             className="title flex items-center justify-center text-4xl sm:text-7xl"
         >
-            {title == "LD Homepage" ? <img src={ldgLogo} className=" object-cover md:h-30 lg:h-35" alt="" /> :title}
+            {title == "LD Homepage" ? (
+                <img
+                    src={ldgLogo}
+                    className=" object-cover md:h-30 lg:h-35"
+                    alt=""
+                />
+            ) : (
+                title
+            )}
         </div>
     );
 }

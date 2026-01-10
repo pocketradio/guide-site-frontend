@@ -90,7 +90,10 @@ export default function PageBuilder({ className }) {
             currentAPI + "/pages/" + pageId + "/blocks",
             {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Secret": import.meta.env.VITE_SECRET,
+                },
                 body: JSON.stringify({ order: nextOrder, type }),
             },
         );
@@ -104,7 +107,10 @@ export default function PageBuilder({ className }) {
             currentAPI + "/pages/" + pageId + "/blocks",
             {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Secret": import.meta.env.VITE_SECRET,
+                },
                 body: JSON.stringify({ type: "offset", order }),
             },
         );
@@ -123,8 +129,9 @@ export default function PageBuilder({ className }) {
     async function deleteBlock(block) {
         const response = await fetch(currentAPI + "/blocks/" + block.id, {
             method: "DELETE",
-            // headers: { "Content-Type": "application/json" },
-            // body: JSON.stringify({}),
+            headers: {
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
         });
 
         const deletedBlock = await response.json();
@@ -140,7 +147,10 @@ export default function PageBuilder({ className }) {
 
         const response = await fetch(currentAPI + "/blocks/" + block.id, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
             body: JSON.stringify({ content, content2 }),
         });
 

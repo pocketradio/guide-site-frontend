@@ -446,7 +446,7 @@ export default function GuardianCosts() {
                         <option value="rare">Rare</option>
                         <option value="common">Common</option>
                     </select>
-                    <label for="from-level">  From: </label>
+                    <label for="from-level"> From: </label>
                     <select
                         name="from-level"
                         id="from-level"
@@ -474,7 +474,7 @@ export default function GuardianCosts() {
                         <option value="13">13</option>
                         <option value="14">14</option>
                     </select>
-                    <label for="to-level">  To: </label>
+                    <label for="to-level"> To: </label>
                     <select
                         name="to-level"
                         id="to-level"

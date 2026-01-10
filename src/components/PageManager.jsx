@@ -2,6 +2,7 @@ import "../tailwind.css";
 import { Fragment, useEffect, useState } from "react";
 import PagesItem from "./PagesItem";
 import { usePage } from "../contexts/PageProvider";
+const secret = import.meta.env.VITE_SECRET;
 
 // title refers to the title input field
 // setTitleInput updates that field
@@ -30,7 +31,10 @@ export default function PageManager({ isAdmin }) {
         try {
             response = await fetch(currentAPI + "/pages", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Admin-Secret": import.meta.env.VITE_SECRET,
+                },
                 body: JSON.stringify({ title }),
             });
         } catch (err) {
@@ -63,7 +67,10 @@ export default function PageManager({ isAdmin }) {
 
         fetch(currentAPI + "/pages/" + id, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
             body: JSON.stringify(),
         });
     }
@@ -76,7 +83,10 @@ export default function PageManager({ isAdmin }) {
 
         await fetch(currentAPI + "/pages/" + id, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
             body: JSON.stringify({ title }),
         });
 
@@ -95,6 +105,7 @@ export default function PageManager({ isAdmin }) {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ slug }),
+            "X-Admin-Secret": import.meta.env.VITE_SECRET,
         });
 
         const newPages = [...pages];

@@ -1,5 +1,6 @@
 import { usePage } from "../../contexts/PageProvider";
 import { useState, Fragment } from "react";
+const secret = import.meta.env.VITE_SECRET;
 
 export default function SingleImageBlock({
     deleteBlock,
@@ -14,6 +15,7 @@ export default function SingleImageBlock({
             currentAPI + "/blocks/" + block.id + "/files",
             {
                 method: "Delete",
+                headers: { "X-Admin-Secret": import.meta.env.VITE_SECRET },
             },
         );
         const result = await response.json();
@@ -31,6 +33,7 @@ export default function SingleImageBlock({
             {
                 method: "POST",
                 body: formData,
+                headers: { "X-Admin-Secret": import.meta.env.VITE_SECRET },
             },
         );
         if (!response.ok) {
@@ -46,6 +49,9 @@ export default function SingleImageBlock({
     async function deleteFileById(id) {
         const response = await fetch(currentAPI + "/files/" + id, {
             method: "Delete",
+            headers: {
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
         });
         const result = await response.json();
         refreshBlock(block.id);
@@ -55,6 +61,9 @@ export default function SingleImageBlock({
         const fileId = block.files[number].id;
         const response = await fetch(currentAPI + "/files/" + fileId, {
             method: "Delete",
+            headers: {
+                "X-Admin-Secret": import.meta.env.VITE_SECRET,
+            },
         });
         const result = await response.json();
     }

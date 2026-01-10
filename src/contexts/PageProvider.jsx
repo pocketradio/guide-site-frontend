@@ -7,10 +7,7 @@ export function PageProvider({ children }) {
     const [gameId, setGameId] = useState(1);
     const serverAPI = "https://guide-site-backend.onrender.com";
     const localAPI = "http://localhost:3000";
-    const currentAPI = serverAPI;
-
-    // selectedGameData is not working as intended at the moment
-    // remove it
+    const currentAPI = localAPI;
 
     return (
         <PageContext.Provider
