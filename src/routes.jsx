@@ -7,6 +7,7 @@ import oldRoutes from "./js/oldRoutes.jsx";
 import NotFound from "./components/NotFound.jsx";
 import GuardianCosts from "./components/mini-apps/GuardianCosts.jsx";
 import ImmortalGuardians from "./components/mini-apps/ImmortalGuardians.jsx";
+import NavigationPanel from "./components/NavigationPanel.jsx";
 const env = import.meta.env.VITE_ENV;
 
 const routes = [
@@ -32,7 +33,12 @@ if (env == "DEV") {
     routes[routes.length - 1].children.unshift({
         path: "page-manager/",
         element: <PageManager isAdmin={true} />,
+    },{
+        path : "navigation-panel/",
+        element : <NavigationPanel isAdmin = {true}/>
     });
+
+    routes[routes.length - 1]
 }
 
 export default routes;
