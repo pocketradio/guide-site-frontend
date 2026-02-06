@@ -18,6 +18,9 @@ export default function NavigationPanel({ isAdmin }) {
 	const [pageName, setPageName] = useState("");
 
 	const [newSectionName, setNewSectionName] = useState("");
+	
+	const [draggedSection, setDraggedSection] = useState(null);
+	const [dragOverSection, setDragOverSection] = useState(null);
 
     useEffect(()=>{
         const unsubscribe = onHydrateNavbar(() => {
@@ -27,6 +30,10 @@ export default function NavigationPanel({ isAdmin }) {
         return unsubscribe // unsubscribe is the cleanup fn which is returned. 
     },[])
 
+	const getSortedSections = () => {
+		return Array.from(sectionsMap.values()).sort((a, b) => a.order - b.order);
+	};
+
 	async function createSection() {
 		if (!newSectionName.trim()) {
 			alert("Section name cannot be empty");
@@ -34,6 +41,9 @@ export default function NavigationPanel({ isAdmin }) {
 		}
 
 		try {
+			const sections = getSortedSections();
+			const maxOrder = sections.length > 0 ? Math.max(...sections.map(s => s.order || 0)) : -1;
+
 			const response = await fetch(currentAPI + "/sections", {
 				method: "POST",
 				headers: {
@@ -42,7 +52,8 @@ export default function NavigationPanel({ isAdmin }) {
 				},
 				body: JSON.stringify({ 
 					title: newSectionName,
-					gameId
+					gameId,
+					order: maxOrder + 1
 				})
 			});
 
@@ -57,7 +68,7 @@ export default function NavigationPanel({ isAdmin }) {
 
 	async function renameSection(id) {
 		try {
-			await fetch(currentAPI + "/sections/" + id, {
+			await fetch(currentAPI + "/sections/rename/" + id, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -76,7 +87,7 @@ export default function NavigationPanel({ isAdmin }) {
 
 	async function deleteSection(id) {
 		try {
-			await fetch(currentAPI + "/sections/" + id, {
+			await fetch(currentAPI + "/sections/delete/" + id, {
 				method: "DELETE",
 				headers: {
 					"x-admin-secret": secret,
@@ -88,6 +99,79 @@ export default function NavigationPanel({ isAdmin }) {
 		} catch (err) {
 			console.error("Failed to delete section:", err);
 		}
+	}
+
+	async function reorderSections(newOrder) {
+		try {
+			await fetch(currentAPI + "/sections/reorder", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"x-admin-secret": secret,
+				},
+				body: JSON.stringify({ 
+					gameId,
+					sectionOrder: newOrder 
+				})
+			});
+
+			newOrder.forEach((id, index) => {
+				const section = sectionsMap.get(id);
+				if (section) {
+					section.order = index;
+				}
+			});
+
+			forceRender(x => x + 1);
+		} catch (err) {
+			console.error("Failed to reorder sections:", err);
+		}
+	}
+
+	function handleDragStart(e, section) {
+		setDraggedSection(section);
+		e.dataTransfer.effectAllowed = "move";
+		e.currentTarget.style.opacity = "0.4";
+	}
+
+	function handleDragEnd(e) {
+		e.currentTarget.style.opacity = "1";
+		setDraggedSection(null);
+		setDragOverSection(null);
+	}
+
+	function handleDragOver(e) {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = "move";
+		return false;
+	}
+
+	function handleDragEnter(e, section) {
+		setDragOverSection(section);
+	}
+
+	function handleDrop(e, targetSection) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (!draggedSection || draggedSection.id === targetSection.id) {
+			return;
+		}
+
+		const sections = getSortedSections();
+		const draggedIndex = sections.findIndex(s => s.id === draggedSection.id);
+		const targetIndex = sections.findIndex(s => s.id === targetSection.id);
+
+		const reordered = [...sections];
+		const [removed] = reordered.splice(draggedIndex, 1);
+		reordered.splice(targetIndex, 0, removed);
+
+		const newOrder = reordered.map(s => s.id);
+
+		reorderSections(newOrder);
+
+		setDraggedSection(null);
+		setDragOverSection(null);
 	}
 
 	async function renamePage(id, sectionId) {
@@ -145,7 +229,7 @@ export default function NavigationPanel({ isAdmin }) {
 				/>
 				<button
 					onClick={createSection}
-					className="bg-green-600 px-4 py-2 rounded"
+					className="bg-green-600 px-4 py-2 rounded hover: cursor-pointer"
 				>
 					Add Section
 				</button>
@@ -155,6 +239,7 @@ export default function NavigationPanel({ isAdmin }) {
                 <table className="m-0 w-full border border-gray-700">
                     <thead>
                         <tr className="bg-gray-800">
+							<th className="p-2 text-left w-8"></th>
                             <th className="p-2 text-left">Section</th>
                             <th className="p-2 text-left">Pages</th>
                             <th className="p-2 text-left">Actions</th>
@@ -162,8 +247,25 @@ export default function NavigationPanel({ isAdmin }) {
                     </thead>
 
                     <tbody>
-                        {Array.from(sectionsMap.values()).map(section => (
-                            <tr key={section.id} className="border-t border-gray-700">
+                        {getSortedSections().map(section => (
+                            <tr 
+								key={section.id} 
+								className={`border-t border-gray-700 transition-colors ${
+									dragOverSection?.id === section.id && draggedSection?.id !== section.id
+										? 'bg-gray-700'
+										: ''
+								} ${editingSection === section.id ? '' : 'cursor-move hover:bg-gray-800'}`}
+								draggable={editingSection !== section.id}
+								onDragStart={(e) => handleDragStart(e, section)}
+								onDragEnd={handleDragEnd}
+								onDragOver={handleDragOver}
+								onDragEnter={(e) => handleDragEnter(e, section)}
+								onDrop={(e) => handleDrop(e, section)}
+							>
+								<td className="p-2 text-center text-gray-500">
+									<span className="text-xl">⋮⋮</span>
+								</td>
+
                                 <td className="p-2">
                                     {editingSection === section.id ? (
                                         <div className="flex gap-2 items-center">
@@ -228,7 +330,8 @@ export default function NavigationPanel({ isAdmin }) {
                                             <button
                                                 onClick={() => {
                                                     if (confirm(`Delete section "${section.title}"?`)) {
-                                                        deleteSection(section.id);
+														console.log(section.id, 'is the section id :)')
+                                                        deleteSection(Number(section.id));
                                                     }
                                                 }}
                                                 className="bg-red-600 px-3 py-1 rounded"
