@@ -6,15 +6,15 @@ export function getNavbarMap(){
     return navbarMap;
 }
 
-export async function hydrateNavbar(api){
+export async function hydrateNavbar(api, gameId){
     if(hydrated){
         return;
     }
 
-    const res = await fetch(api + "/navbar");
+    const res = await fetch(api + "/navbar?gameId=" + gameId);
     const data = await res.json();
 
-    navbarMap.clear() // clearing the map for safety before hydrating
+    navbarMap.clear()
     data.forEach(game => {
         game.sections.forEach(section => {
             navbarMap.set(section.id, section)
@@ -28,11 +28,9 @@ export async function hydrateNavbar(api){
 
 export function onHydrateNavbar(callback){
     listeners.add(callback);
-    if (hydrated){ // meaning map creation complete 
+    if (hydrated){
         callback();
     }
     
-    // sends this to the force render as a cleanup fn
     return () => listeners.delete(callback);
-
 }
