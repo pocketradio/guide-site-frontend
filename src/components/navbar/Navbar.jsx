@@ -36,24 +36,26 @@ export default function Navbar({
     }
     
     // Add sections and their pages from the map
-    Array.from(navbarMap.values()).forEach(section => {
-        // Add section header
-        navbarItems.push({
-            id: section.id,
-            navbarTitle: section.title,
-            type: "section"
-        });
-        
-        // Add pages under this section
-        section.pages.forEach(page => {
+    Array.from(navbarMap.values())
+        .sort((a, b) => a.order - b.order)
+        .forEach(section => {
+            // Add section header
             navbarItems.push({
-                id: page.id,
-                slug: page.slug,
-                navbarTitle: page.title,
-                type: "page"
+                id: section.id,
+                navbarTitle: section.title,
+                type: "section"
+            });
+            
+            // Add pages under this section
+            section.pages.forEach(page => {
+                navbarItems.push({
+                    id: page.id,
+                    slug: page.slug,
+                    navbarTitle: page.title,
+                    type: "page"
+                });
             });
         });
-    });
 
     return (
         <Fragment>
